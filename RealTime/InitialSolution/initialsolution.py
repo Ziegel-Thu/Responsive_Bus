@@ -1,72 +1,78 @@
-import pandas as pd
+import numpy as np
+from Routes.Route import Route
+from Demands.demands import Demands
 
 class InitialSolution:
-    def __init__(self, num_customers, num_vehicles, demands, vehicle_capacity, distance_matrix, time_windows, penalty_coefficient):
-        self.num_customers = num_customers
+    def __init__(self, num_vehicles, vehicle_capacity, distance_matrix, time_windows, penalty_coefficient, demands):
         self.num_vehicles = num_vehicles
-        self.demands = demands
         self.vehicle_capacity = vehicle_capacity
         self.distance_matrix = distance_matrix
         self.time_windows = time_windows
         self.penalty_coefficient = penalty_coefficient
+        self.demands = demands
         self.routes = self.greedy_initial_solution()
         print("InitialSolution Done")
-        print("InitialSolution:", self.routes)
+        print("InitialSolution:", [route.get_route() for route in self.routes])
 
     def greedy_initial_solution(self):
-        routes = [[] for _ in range(self.num_vehicles)]
-        remaining_customers = list(range(1, self.num_customers + 1))
-        remaining_deliveries = list(range(self.num_customers + 1, 2 * self.num_customers + 1))
+        routes = [Route() for _ in range(self.num_vehicles)]
+        unassigned_demands = list(range(self.demands.get_num_demands()))
         vehicle_load = [0] * self.num_vehicles
-
-        # Start each vehicle from depot (index 0)
         current_locations = [0] * self.num_vehicles
 
-        while remaining_customers or any(load > 0 for load in vehicle_load):
+        while unassigned_demands:
             for vehicle in range(self.num_vehicles):
-                if not remaining_customers and vehicle_load[vehicle] == 0:
+                if not unassigned_demands:
                     continue
 
-                best_customer = None
+                best_demand = None
+                best_pickup = None
                 best_delivery = None
                 best_cost = float('inf')
 
-                # Check for the nearest pickup
-                for customer in remaining_customers:
-                    cost = self.distance_matrix[current_locations[vehicle]][customer]
-                    if cost < best_cost and vehicle_load[vehicle] + self.demands[customer - 1] <= self.vehicle_capacity:
-                        best_cost = cost
-                        best_customer = customer
-                        best_delivery = None
+                for demand_idx in unassigned_demands:
+                    pickup_points = self.demands.get_pickup_points(demand_idx)
+                    delivery_points = self.demands.get_delivery_points(demand_idx)
+                    demand_value = self.demands.get_demand_value(demand_idx)
 
-                # Check for the nearest delivery
-                for delivery in remaining_deliveries:
-                    if (delivery - self.num_customers) in routes[vehicle]:
-                        cost = self.distance_matrix[current_locations[vehicle]][delivery]
-                        if cost < best_cost:
-                            best_cost = cost
-                            best_customer = None
-                            best_delivery = delivery
+                    if vehicle_load[vehicle] + demand_value > self.vehicle_capacity:
+                        continue
 
-                if best_customer is not None:
-                    routes[vehicle].append(best_customer)
-                    vehicle_load[vehicle] += self.demands[best_customer - 1]
-                    current_locations[vehicle] = best_customer
-                    remaining_customers.remove(best_customer)
+                    # 找最优的接送点组合
+                    for pickup in pickup_points:
+                        for delivery in delivery_points:
+                            pickup_cost = self.distance_matrix[current_locations[vehicle]][pickup]
+                            delivery_cost = self.distance_matrix[pickup][delivery]
+                            total_cost = pickup_cost + delivery_cost
 
-                if best_delivery is not None:
-                    routes[vehicle].append(best_delivery)
-                    vehicle_load[vehicle] -= self.demands[best_delivery - self.num_customers - 1]
+                            if total_cost < best_cost:
+                                best_cost = total_cost
+                                best_demand = demand_idx
+                                best_pickup = pickup
+                                best_delivery = delivery
+
+                if best_demand is not None:
+                    # 添加接客点
+                    routes[vehicle].add_node(best_pickup)
+                    routes[vehicle].update_load(self.demands.get_demand_value(best_demand))
+                    vehicle_load[vehicle] += self.demands.get_demand_value(best_demand)
+                    current_locations[vehicle] = best_pickup
+
+                    # 添加送客点
+                    routes[vehicle].add_node(best_delivery)
+                    routes[vehicle].update_load(-self.demands.get_demand_value(best_demand))
+                    vehicle_load[vehicle] -= self.demands.get_demand_value(best_demand)
                     current_locations[vehicle] = best_delivery
-                    remaining_deliveries.remove(best_delivery)
 
-        # Ensure each route ends with the final depot (index 2*num_customers + 1)
-        final_depot = 2 * self.num_customers + 1
-        for i in range(self.num_vehicles):
-            if routes[i][-1] != final_depot:
-                routes[i].append(final_depot)
+                    unassigned_demands.remove(best_demand)
 
-        print("生成的初始路径：", routes)
+        # 添加终点站
+        final_depot = len(self.distance_matrix) - 1
+        for route in routes:
+            if not route.is_empty() and route.get_last_node() != final_depot:
+                route.add_node(final_depot)
+
+        print("The initial route is:", [route.get_route() for route in routes])
         return routes
 
 # 这里可以添加其他辅助函数或类
