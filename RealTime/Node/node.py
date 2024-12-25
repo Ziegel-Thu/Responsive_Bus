@@ -16,5 +16,3 @@ class Node:
     
     def get_demand_load(self):
         return self.demand_load
-
-        
