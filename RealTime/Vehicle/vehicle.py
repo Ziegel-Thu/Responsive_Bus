@@ -1,6 +1,6 @@
 from Node.node import Node
 from Demands.demands import DemandList, Demand
-from Parameters import vehicle_capacity, distance_matrix, Penalty_Coefficient, Maximum_Time_Limit
+from Parameters import vehicle_capacity, distance_matrix, Penalty_Coefficient
 import copy
 import random
 
@@ -14,17 +14,21 @@ class Route:
         for i in range(len(self.nodes)):
             if self.load[i] > vehicle_capacity:
                 return False
-            if self.time[i] > Maximum_Time_Limit:
-                Time_Limit_Violation = True
-            if Time_Limit_Violation and self.nodes[i].get_type() == "pickup":
-                return False
         return True
 class Vehicle:
-    def __init__(self,index: int):
+    def __init__(self,index: int, start_node_id: int, end_node_id: int):
         self.capacity = vehicle_capacity
         self.route = Route(list[Node](), list[int](), list[float]())
         self.index = index
         self.demand_list = list[Demand]()
+        self.start_node_id = start_node_id
+        self.end_node_id = end_node_id
+        
+    def get_start_node_id(self):
+        return self.start_node_id
+
+    def get_end_node_id(self):
+        return self.end_node_id
         
     def get_capacity(self):
         return self.capacity
@@ -47,30 +51,25 @@ class Vehicle:
     
     def get_last_node(self):
         return self.route.nodes[-1] if not self.is_route_empty() else None
-
-    def update_load(self):
-        self.load = 0
-        for node in self.route.nodes:
-            if node.get_type() == "pickup":
-                self.load += node.get_demand_load()
-            elif node.get_type() == "delivery":
-                self.load -= node.get_demand_load()
     
     def get_load(self):
-        return self.load
+        return self.route.load
     
     def calculate_distance(self):
-        distance = distance_matrix[0][self.get_first_node()]
-        for i in range(len(self.route.nodes) - 1):
-            distance += distance_matrix[self.route.nodes[i].get_id()][self.route.nodes[i+1].get_id()]
-        distance += distance_matrix[self.get_last_node()][0]
-        return distance
+        if self.is_route_empty():
+            return distance_matrix[self.get_start_node_id()][self.get_end_node_id()]
+        else:
+            distance = distance_matrix[self.get_start_node_id()][self.get_first_node().get_id()]
+            for i in range(len(self.route.nodes) - 1):
+                distance += distance_matrix[self.route.nodes[i].get_id()][self.route.nodes[i+1].get_id()]
+            distance += distance_matrix[self.get_last_node().get_id()][self.get_end_node_id()]
+            return distance
     
     def calculate_penalty(self, demandlist: DemandList):
         penalty = 0
         for i in range(len(self.route.nodes)):
-            if self.route.time[i] > demandlist.get_demand(self.route.nodes[i].get_id()).get_end_time():
-                penalty += (self.route.time[i] - demandlist.get_demand(self.route.nodes[i].get_id()).get_end_time()) * Penalty_Coefficient
+            if self.route.time[i] > demandlist.get_demand(self.route.nodes[i].get_demand_index()).get_end_time():
+                penalty += (self.route.time[i] - demandlist.get_demand(self.route.nodes[i].get_demand_index()).get_end_time()) * Penalty_Coefficient
         return penalty
     
     def calculate_total_cost(self, demandlist: DemandList):
@@ -97,24 +96,32 @@ class Vehicle:
         return new_cost - current_cost
 
     def update_load(self):
-        self.route.load[0] = self.route.nodes[0].get_demand_load()
-        for i in range(len(self.route.nodes) - 1):
-            current_node = self.route.nodes[i+1]
-            current_load = self.route.load[i]
-            if current_node.get_type() == "pickup":
-                self.route.load[i+1] = current_load + current_node.get_demand_load()
-            elif current_node.get_type() == "delivery":
-                self.route.load[i+1] = current_load - current_node.get_demand_load()
+        if self.is_route_empty():
+            return []
+        else:
+            self.route.load = [0] * len(self.route.nodes)
+            self.route.load[0] = self.route.nodes[0].get_demand_load()
+            for i in range(len(self.route.nodes) - 1):
+                current_node = self.route.nodes[i+1]
+                current_load = self.route.load[i]
+                if current_node.get_type() == "pickup":
+                    self.route.load[i+1] = current_load + current_node.get_demand_load()
+                elif current_node.get_type() == "delivery":
+                    self.route.load[i+1] = current_load - current_node.get_demand_load()
     
     def update_time(self, demandlist: DemandList):
-        self.route.time[0] = distance_matrix[0][self.get_first_node()]
-        for i in range(len(self.route.nodes) - 1):
-            current_time = self.route.time[i]
-            current_node = self.route.nodes[i+1]
-            current_time += distance_matrix[current_node.get_id()][self.route.nodes[i].get_id()]
-            if current_time < demandlist.get_demand(current_node.get_id()).get_start_time():
-                current_time = demandlist.get_demand(current_node.get_id()).get_start_time()
-            self.route.time[i+1] = current_time
+        if self.is_route_empty():
+            return []
+        else:
+            self.route.time = [0] * len(self.route.nodes)
+            self.route.time[0] = distance_matrix[self.get_start_node_id()][self.get_first_node().get_id()]
+            for i in range(len(self.route.nodes) - 1):
+                current_time = self.route.time[i]
+                current_node = self.route.nodes[i+1]
+                current_time += distance_matrix[current_node.get_id()][self.route.nodes[i].get_id()]
+                if current_time < demandlist.get_demand(current_node.get_demand_index()).get_start_time():
+                    current_time = demandlist.get_demand(current_node.get_demand_index()).get_start_time()
+                self.route.time[i+1] = current_time
     
     def insert_demand(self, demand: Demand, demandlist: DemandList):
         best_cost = float('inf')
