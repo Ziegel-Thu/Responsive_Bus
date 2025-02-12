@@ -136,14 +136,14 @@ class Vehicle:
                         temp_vehicle.update_load()
                         temp_vehicle.update_time(demandlist)
                         temp_vehicle.append_demand(demand)
-                        if temp_vehicle.route.validate_route(demandlist):
+                        if temp_vehicle.route.validate_route():
                             temp_cost = temp_vehicle.calculate_total_cost(demandlist)
                             if temp_cost < best_cost:
                                 best_cost = temp_cost
                                 best_status = temp_vehicle
         return best_status, best_cost 
     
-    def random_insert(self, demand: Demand):
+    def random_insert(self, demand: Demand,demandlist: DemandList):
         pickup_index = random.randint(0, len(self.route.nodes))
         pickup_node = random.choice(demand.get_pickup_nodes())
         delivery_index = random.randint(pickup_index, len(self.route.nodes))
@@ -152,7 +152,7 @@ class Vehicle:
         new_vehicle.route.nodes.insert(pickup_index, pickup_node)
         new_vehicle.route.nodes.insert(delivery_index+1, delivery_node)
         new_vehicle.update_load()
-        new_vehicle.update_time()
+        new_vehicle.update_time(demandlist)
         new_vehicle.append_demand(demand)
         if new_vehicle.route.validate_route():
             return new_vehicle

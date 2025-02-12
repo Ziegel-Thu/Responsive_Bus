@@ -1,12 +1,13 @@
 from Node.node import Node
 
 class Demand:
-    def __init__(self, pickup_nodes: list[Node], delivery_nodes: list[Node], demand_load: int, start_time: float, end_time: float):
+    def __init__(self, pickup_nodes: list[Node], delivery_nodes: list[Node], demand_load: int, start_time: float, end_time: float, index: int):
         self.pickup_nodes = pickup_nodes
         self.delivery_nodes = delivery_nodes
         self.demand_load = demand_load
         self.start_time = start_time
         self.end_time = end_time
+        self.index = index
 
     def get_pickup_nodes(self):
         return self.pickup_nodes
@@ -23,6 +24,8 @@ class Demand:
     def get_end_time(self):
         return self.end_time
     
+    def get_index(self):
+        return self.index
     
 class DemandList:
     def __init__(self, demandlist: list[Demand]):
