@@ -1,6 +1,6 @@
 from Node.node import Node
 from Demands.demands import DemandList, Demand
-from Parameters import vehicle_capacity, distance_matrix, Penalty_Coefficient
+from Parameters import vehicle_capacity, distance_matrix, Penalty_Coefficient,maximum_time_limit
 import copy
 import random
 
@@ -13,6 +13,8 @@ class Route:
     def validate_route(self):
         for i in range(len(self.nodes)):
             if self.load[i] > vehicle_capacity:
+                return False
+            if self.time[i] > maximum_time_limit:
                 return False
         return True
 class Vehicle:
@@ -85,14 +87,26 @@ class Vehicle:
         self.demand_list.append(demand)
 
     def remove_demand(self, demand: Demand):
-        if demand in self.demand_list:
-            self.demand_list.remove(demand)
+        for v_demand in self.demand_list:
+            if v_demand.get_index() == demand.get_index():
+                self.demand_list.remove(v_demand)
+                break
+    def remove_demand_nodes(self, demand: Demand, demandlist: DemandList):
+        nodes_to_remove = []
+        for node in self.route.nodes:
+            if demandlist.get_demand_by_node(node).index == demand.get_index():
+                nodes_to_remove.append(node)  
+        for node in nodes_to_remove:
+            self.route.nodes.remove(node)        
     
     def calculate_demand_cost(self, demand: Demand, demandlist: DemandList):
         current_cost = self.calculate_total_cost(demandlist)
         new_vehicle = copy.deepcopy(self)
         new_vehicle.remove_demand(demand)
+        new_vehicle.remove_demand_nodes(demand, demandlist)
+        new_vehicle.update_time(demandlist)
         new_cost = new_vehicle.calculate_total_cost(demandlist)
+        print(new_cost - current_cost)
         return new_cost - current_cost
 
     def update_load(self):
