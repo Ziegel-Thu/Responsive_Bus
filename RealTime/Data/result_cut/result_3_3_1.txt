@@ -1,26 +1,54 @@
 Basic case generated
 
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-costs:  0.8482855212422762 
+1   72   pickup   18
+1   27   delivery   18
+costs:  1.017590651950325 
 
-total cost:  0.8482855212422762 load_serviced 14 
+vehicle  1
+0   28   pickup   27
+0   31   delivery   27
+costs:  1.884079501896173 
+
+vehicle  2
+2   56   pickup   17
+2   64   delivery   17
+costs:  1.304369327487422 
+
+total cost:  4.20603948133392 load_serviced 62 
 
 
 Initial complemented solution generated
 vehicle  0
-1   11   pickup   29
-0   58   pickup   14
-1   39   delivery   29
-0   14   delivery   14
-2   43   pickup   25
-2   35   delivery   25
-costs:  3.4125301134851687 
+1   72   pickup   18
+1   27   delivery   18
+7   60   pickup   18
+7   10   delivery   18
+costs:  5.226237576189693 
 
-total cost:  3.4125301134851687 load_serviced 68 
+vehicle  1
+0   28   pickup   27
+0   31   delivery   27
+5   21   pickup   28
+5   58   delivery   28
+6   110   pickup   24
+6   38   delivery   24
+costs:  11.333014686826278 
 
-3.4125301134851687 68
+vehicle  2
+8   55   pickup   19
+4   42   pickup   23
+3   51   pickup   21
+4   34   delivery   23
+3   129   delivery   21
+2   56   pickup   17
+2   64   delivery   17
+8   49   delivery   19
+costs:  10.887145214607425 
+
+total cost:  27.446397477623396 load_serviced 195 
+
+27.446397477623396 195
 
 Iteration:  0
 
@@ -1024,13 +1052,31 @@ Iteration:  499
 
 best solution
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-1   11   pickup   29
-1   39   delivery   29
-2   47   pickup   25
-2   35   delivery   25
-costs:  2.1462066132898348 
+4   36   pickup   23
+8   40   pickup   19
+4   34   delivery   23
+1   72   pickup   18
+7   61   pickup   18
+7   14   delivery   18
+8   49   delivery   19
+1   27   delivery   18
+costs:  2.247652516920931 
 
-total cost:  2.1462066132898348 load_serviced 68 
+vehicle  1
+0   28   pickup   27
+5   15   pickup   28
+5   58   delivery   28
+0   31   delivery   27
+6   110   pickup   24
+6   38   delivery   24
+costs:  2.58827522636924 
+
+vehicle  2
+3   8   pickup   21
+3   129   delivery   21
+2   56   pickup   17
+2   64   delivery   17
+costs:  1.9834678195239361 
+
+total cost:  6.8193955628141065 load_serviced 195 
 

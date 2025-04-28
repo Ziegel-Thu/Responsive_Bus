@@ -31,8 +31,8 @@ def find_array_place(point, array):
 # 测试代码
 if __name__ == "__main__":
     all_arrays, multiple_arrays = read_and_process_groups('groups.txt')
-    for k in [1,3,5]:
-        for a in [3,6,9]:
+    for k in [1]:
+        for a in [9]:
             start = random.randint(0, 72)
             end = random.randint(0, 72)
             while start == end:

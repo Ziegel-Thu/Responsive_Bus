@@ -1,26 +1,48 @@
 Basic case generated
 
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-costs:  0.8482855212422762 
+1   72   pickup   18
+1   27   delivery   18
+costs:  1.017590651950325 
 
-total cost:  0.8482855212422762 load_serviced 14 
+vehicle  1
+0   28   pickup   27
+0   31   delivery   27
+costs:  1.884079501896173 
+
+vehicle  2
+2   56   pickup   17
+2   64   delivery   17
+costs:  1.304369327487422 
+
+total cost:  4.20603948133392 load_serviced 62 
 
 
 Initial complemented solution generated
 vehicle  0
-1   11   pickup   29
-0   58   pickup   14
-1   39   delivery   29
-0   14   delivery   14
-2   43   pickup   25
-2   35   delivery   25
-costs:  3.4125301134851687 
+5   15   pickup   28
+5   9   delivery   28
+1   72   pickup   18
+1   27   delivery   18
+costs:  1.8142858141167362 
 
-total cost:  3.4125301134851687 load_serviced 68 
+vehicle  1
+0   28   pickup   27
+0   31   delivery   27
+costs:  1.884079501896173 
 
-3.4125301134851687 68
+vehicle  2
+6   115   pickup   24
+2   56   pickup   17
+8   40   pickup   19
+2   64   delivery   17
+8   6   delivery   19
+6   17   delivery   24
+costs:  2.706010140130028 
+
+total cost:  6.404375456142937 load_serviced 133 
+
+6.404375456142937 133
 
 Iteration:  0
 
@@ -1024,13 +1046,31 @@ Iteration:  499
 
 best solution
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-1   11   pickup   29
-1   39   delivery   29
-2   47   pickup   25
-2   35   delivery   25
-costs:  2.1462066132898348 
+8   40   pickup   19
+5   15   pickup   28
+5   9   delivery   28
+1   72   pickup   18
+8   49   delivery   19
+1   27   delivery   18
+costs:  2.6659549234937376 
 
-total cost:  2.1462066132898348 load_serviced 68 
+vehicle  1
+0   28   pickup   27
+0   31   delivery   27
+costs:  1.884079501896173 
+
+vehicle  2
+3   51   pickup   21
+4   37   pickup   23
+6   115   pickup   24
+3   65   delivery   21
+2   56   pickup   17
+2   64   delivery   17
+4   44   delivery   23
+7   60   pickup   18
+7   14   delivery   18
+6   17   delivery   24
+costs:  2.934190107032971 
+
+total cost:  7.484224532422881 load_serviced 195 
 

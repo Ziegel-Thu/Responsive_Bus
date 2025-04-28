@@ -8,7 +8,7 @@ initial_temperature = 1000
 cooling_rate = 0.99
 max_iterations = 500
 max_recent_costs = 10
-identical_solution_threshold = 3
+identical_solution_threshold = 11
 maximum_time_limit = 6
 
 

@@ -1,26 +1,72 @@
 Basic case generated
 
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-costs:  0.8482855212422762 
+3   65   pickup   18
+1   55   pickup   20
+3   57   delivery   18
+1   10   delivery   20
+costs:  1.9062830321562556 
 
-total cost:  0.8482855212422762 load_serviced 14 
+vehicle  1
+5   22   pickup   20
+5   58   delivery   20
+2   5   pickup   14
+2   128   delivery   14
+costs:  2.285470062385648 
+
+vehicle  2
+0   14   pickup   16
+4   6   pickup   25
+0   51   delivery   16
+4   21   delivery   25
+costs:  2.230591975507545 
+
+total cost:  6.422345070049449 load_serviced 113 
 
 
 Initial complemented solution generated
 vehicle  0
-1   11   pickup   29
-0   58   pickup   14
-1   39   delivery   29
-0   14   delivery   14
-2   43   pickup   25
-2   35   delivery   25
-costs:  3.4125301134851687 
+3   65   pickup   18
+1   55   pickup   20
+3   57   delivery   18
+8   104   pickup   15
+1   10   delivery   20
+11   156   pickup   26
+8   1   delivery   15
+11   177   delivery   26
+14   0   pickup   22
+14   20   delivery   22
+costs:  26.684548283161917 
 
-total cost:  3.4125301134851687 load_serviced 68 
+vehicle  1
+5   22   pickup   20
+15   17   pickup   10
+5   58   delivery   20
+2   5   pickup   14
+10   83   pickup   29
+7   31   pickup   22
+15   68   delivery   10
+9   25   pickup   29
+2   128   delivery   14
+10   133   delivery   29
+7   112   delivery   22
+9   60   delivery   29
+costs:  31.18157937463706 
 
-3.4125301134851687 68
+vehicle  2
+0   14   pickup   16
+12   70   pickup   10
+16   11   pickup   15
+4   6   pickup   25
+12   15   delivery   10
+0   51   delivery   16
+16   73   delivery   15
+4   21   delivery   25
+costs:  20.841920853865087 
+
+total cost:  78.70804851166406 load_serviced 291 
+
+78.70804851166406 291
 
 Iteration:  0
 
@@ -1024,13 +1070,49 @@ Iteration:  499
 
 best solution
 vehicle  0
-0   58   pickup   14
-0   14   delivery   14
-1   11   pickup   29
-1   39   delivery   29
-2   47   pickup   25
-2   35   delivery   25
-costs:  2.1462066132898348 
+3   65   pickup   18
+9   25   pickup   29
+9   60   delivery   29
+13   52   pickup   10
+13   41   delivery   10
+1   55   pickup   20
+3   57   delivery   18
+11   156   pickup   26
+11   177   delivery   26
+7   31   pickup   22
+7   112   delivery   22
+1   10   delivery   20
+costs:  4.324403649917213 
 
-total cost:  2.1462066132898348 load_serviced 68 
+vehicle  1
+17   88   pickup   16
+5   22   pickup   20
+5   58   delivery   20
+6   124   pickup   25
+8   104   pickup   15
+6   39   delivery   25
+8   1   delivery   15
+2   5   pickup   14
+17   69   delivery   16
+2   128   delivery   14
+costs:  3.2663871910017814 
+
+vehicle  2
+12   70   pickup   10
+0   14   pickup   16
+15   17   pickup   10
+15   68   delivery   10
+10   83   pickup   29
+4   6   pickup   25
+0   51   delivery   16
+16   11   pickup   15
+16   73   delivery   15
+14   0   pickup   22
+14   20   delivery   22
+10   133   delivery   29
+12   15   delivery   10
+4   21   delivery   25
+costs:  3.1755626345655736 
+
+total cost:  10.766353475484568 load_serviced 342 
 

@@ -106,7 +106,6 @@ class Vehicle:
         new_vehicle.remove_demand_nodes(demand, demandlist)
         new_vehicle.update_time(demandlist)
         new_cost = new_vehicle.calculate_total_cost(demandlist)
-        print(new_cost - current_cost)
         return new_cost - current_cost
 
     def update_load(self):

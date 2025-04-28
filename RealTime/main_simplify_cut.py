@@ -1,6 +1,6 @@
 from Demands.demands import DemandList, Demand
 from Node.node import Node
-from Parameters import vehicle_capacity, distance_matrix, initial_temperature, cooling_rate, max_iterations, max_recent_costs, identical_solution_threshold
+from Parameters_cut import vehicle_capacity, distance_matrix, initial_temperature, cooling_rate, max_iterations, max_recent_costs, identical_solution_threshold
 import math
 import random
 import copy
@@ -83,15 +83,12 @@ def destroy_demands(vehicle_list: list[Vehicle], destroyed_demands: list[Demand]
 
         for node in vehicle.get_route().nodes:
             if demandlist.get_demand_by_node(node) in destroyed_demands:
-                print("destroyed", node.demand_index)
                 if node.get_type() == "delivery":
                     demands_to_remove.append(demandlist.get_demand_by_node(node))
                 nodes_to_remove.append(node)
         for node in nodes_to_remove:
             vehicle.remove_node(node)
         for demand in demands_to_remove:
-            print("\nremoving demand with index", demand.get_index())
-
             vehicle.remove_demand(demand)
             optional_demands.remove(demand)
             available_demands.append(demand)
@@ -111,12 +108,8 @@ def find_worst_demand(vehicle_list: list[Vehicle], demandlist: DemandList, destr
         flag = False
         for vehicle in vehicle_list:
             for v_demand in vehicle.get_demand_list():
-                print(v_demand.index)
                 if v_demand.index == demand.index :
-                    print("\ndemand",demand.index)
-                    print("vehicle", vehicle.get_index())
                     cost = vehicle.calculate_demand_cost(demand, demandlist)
-                    print(cost)
                     if cost < worst_cost:
                         worst_cost = cost
                         worst_demand = demand
@@ -138,18 +131,12 @@ def find_bad_cost(vehicle_list: list[Vehicle], demandlist: DemandList, destroyab
                         bad_costs[demand.index] = cost  # Map demand to its cost
                         flag = True
                         break
-                    else:
-                        print("no change")
             if flag:
                 break
     return bad_costs
 
 def find_bad_demand(vehicle_list: list[Vehicle], demandlist: DemandList, destroyable_demands: list[Demand]):
     cost_list  = find_bad_cost(vehicle_list, demandlist, destroyable_demands)
-    print("find bad demand with in")
-    for temp_demand in destroyable_demands:
-        print(temp_demand.index)
-    print(cost_list)
     avg_cost = sum(cost_list.values()) / len(cost_list)
     normalized_costs = {demand_id: cost/avg_cost for demand_id, cost in cost_list.items()} if avg_cost else {}
     # Calculate probabilities using softmax
@@ -161,7 +148,6 @@ def find_bad_demand(vehicle_list: list[Vehicle], demandlist: DemandList, destroy
     rand = random.random()
     cumulative_prob = 0
     bad_demand = None
-    print(probabilities)
     for demand_id, prob in probabilities.items():
         cumulative_prob += prob
         if rand <= cumulative_prob:
@@ -204,21 +190,15 @@ def best_repair(vehicle_list: list[Vehicle], demandlist: DemandList, repairing_d
             for vehicle_id in range(num_vehicles):
                 best_update, cost = new_vehicle_list[vehicle_id].insert_demand(demand,demandlist)
                 if best_update:
-                    print(cost,demand.index,vehicle_id)
                     if cost < best_cost:
                         best_cost = cost
                         best_choice = vehicle_id
                         best_change = best_update
                         best_demand = demand
-                else:
-                    print("repair not found")        
         if best_change:
             optional_demands.append(best_demand)
             repairing_demands.remove(best_demand)
             new_vehicle_list[best_choice] = best_change
-            print("success")
-            for node in best_change.get_route().nodes:
-                print(demandlist.get_demand_by_node(node).index," ", best_change.get_index())
         else:
             possible = False
     return new_vehicle_list
@@ -228,26 +208,17 @@ def random_repair(vehicle_list: list[Vehicle], repairing_demands: list[Demand],d
     failure_count = 0
     max_failure = math.ceil(len(repairing_demands) * 0.3)
     success = False
-    print("\navailable demands")
-    for demand in repairing_demands:
-        print(demand.index)
     while failure_count < max_failure and repairing_demands:
         demand = random.choice(repairing_demands)
         vehicle_id = random.choice(range(num_vehicles))
         new_vehicle = new_vehicle_list[vehicle_id].random_insert(demand,demandlist)
         if new_vehicle:
-            print("repaired",demand.index,vehicle_id)
             new_vehicle_list[vehicle_id] = new_vehicle
             repairing_demands.remove(demand)
             optional_demands.append(demand)
             success = True
-            print(success)
         else:
             failure_count += 1
-            print("fail")
-    print("\noptional demands")
-    for demand in optional_demands:
-        print(demand.index)
     return new_vehicle_list, success
 
 def calculate_cost(vehicle_list: list[Vehicle], demands: DemandList):
@@ -302,25 +273,21 @@ def ALNS(initial_demands: DemandList, new_demands: DemandList, max_iterations: i
     while iteration < max_iterations:
         print("\nIteration: ",iteration)
         if need_random_destroy:
-            print("processing random destroy")
-            print("\n before destroy")
-            print_solution(current_solution, demands)
+            #print("processing random destroy")
             random_destroy(current_solution, optional_demands,demands, destroy_rate,available_demands)
-            print("\nafter destroy!")
-            print_solution(current_solution, demands)
             need_random_destroy = False
-            print("processing random repair")
+            #print("processing random repair")
             new_vehicle_list, success = random_repair(current_solution, available_demands, demands, optional_demands)
             iteration +=1
             temperature *= cooling_rate
             if success:
-                print("sucessfully repaired")
+                #print("sucessfully repaired")
                 vehicle_list = new_vehicle_list
-                print("random result force accepted")
+                #print("random result force accepted")
                 recent_costs.clear()
             else:
                 vehicle_list = current_solution
-                print_solution(vehicle_list, demands)
+                #print_solution(vehicle_list, demands)
                 recent_costs.clear()
             random_cost, random_load_serviced = calculate_cost (vehicle_list, demands)
             temporary_best_cost = random_cost
@@ -331,22 +298,18 @@ def ALNS(initial_demands: DemandList, new_demands: DemandList, max_iterations: i
             current_solution = copy.deepcopy(vehicle_list)
             current_optional_demands = optional_demands
             current_available_demands = available_demands
-            print("processing bad destroy")
-            bad_destroy(current_solution, demands,optional_demands, destroy_rate,available_demands)
-            print_solution(current_solution, demands)
-            print("processing best rrrrepair")
-            print("num:",len(available_demands))
-            for demand in available_demands:
-                print(demand.index)
+            #print("processing bad destroy")
+            worst_destroy(current_solution, demands,optional_demands, destroy_rate,available_demands)
+            #print("processing best rrrrepair")
             new_vehicle_list = best_repair(current_solution,demands, available_demands, optional_demands)
             
             if new_vehicle_list:
-                print("repaired")
-                print_solution(new_vehicle_list,demands)
+                #print("repaired")
+                #print_solution(new_vehicle_list,demands)
                 current_solution = new_vehicle_list
                 repairable = True
             while not repairable:
-                print("best repair failed, processing random repair")
+                #print("best repair failed, processing random repair")
                 new_vehicle_list, success = random_repair(vehicle_list, available_demands, demands, optional_demands)
                 if success:
                     vehicle_list = new_vehicle_list
@@ -360,19 +323,17 @@ def ALNS(initial_demands: DemandList, new_demands: DemandList, max_iterations: i
                 vehicle_list = current_solution
                 temporary_best_cost = current_cost
                 temporary_most_load = load_serviced
-                print("\nnew solution accepted")
+                #print("\nnew solution accepted")
                 recent_costs.append(current_cost)
                 if len(recent_costs) > max_recent_costs:
                     recent_costs.pop(0)
                 if recent_costs.count(current_cost) > identical_solution_threshold:
                     need_random_destroy = True
-                print_solution(vehicle_list, demands)
+                #print_solution(vehicle_list, demands)
             else:
-                print("\nnew solution rejected")
+                #print("\nnew solution rejected")
                 optional_demands = current_optional_demands
                 available_demands = current_available_demands
-                print(len(optional_demands))
-                print(len(available_demands))
             if (temporary_best_cost < best_cost and temporary_most_load == most_load) or most_load < temporary_most_load:
                 best_cost = temporary_best_cost
                 best_solution = vehicle_list
@@ -381,11 +342,6 @@ def ALNS(initial_demands: DemandList, new_demands: DemandList, max_iterations: i
         sum =0
         for vehicle in vehicle_list:
             sum += len(vehicle.route.nodes)
-        if sum !=(2*len(optional_demands) +2* (initial_demands.get_num_demands())):
-            print_solution(vehicle_list, demands)
-            for t_demand in optional_demands:
-                print(t_demand.index)
-            sys.exit("error")
     print("\nbest solution")
     print_solution(best_solution, demands)
     return best_cost, most_load, time.time()-time_start
@@ -453,11 +409,10 @@ def read_new_demand(file_path: str, num_initial_demands:int) -> DemandList:
 def main():
     if not os.path.exists("Data/Result"):
         os.makedirs("Data/Result")
-
-    for k in [1,3,5]:
+    for k in [1,3]:
         for a in [3,6,9]:
             for b in [0,0.5,1]:
-                output_file = f"Data/Result/result_{k}_{a}_{b}.txt"
+                output_file = f"Data/Result_cut/result_{k}_{a}_{b}.txt"
                 global num_vehicles
                 num_vehicles = k
                 start_node_id, end_node_id, initial_demands = read_initial_demand(f"Data/demand/output_{k}_{a}_{b}_init.txt")
@@ -466,9 +421,9 @@ def main():
                 with open(output_file, 'w') as f:
                     original_stdout = sys.stdout
                     sys.stdout = f
-                    cost,load,time =ALNS(initial_demands, new_demands, max_iterations, start_node_id, end_node_id, num_vehicles )
+                    cost,load,time =ALNS(initial_demands, new_demands, max_iterations, start_node_id, end_node_id, num_vehicles)
                     sys.stdout = original_stdout
-                    print(k,a,b,cost,load,time)      
+                print(k,a,b,cost,load,time)      
 if __name__ == "__main__":
     main()
 
