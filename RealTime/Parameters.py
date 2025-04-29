@@ -1,6 +1,6 @@
 import pandas as pd
 
-Penalty_Coefficient = 3.14
+Penalty_Coefficient = 3
 num_vehicles = 5
 vehicle_capacity = 100
 distance_matrix = pd.read_csv('Data/wangjing-newdis-expanded.csv').values

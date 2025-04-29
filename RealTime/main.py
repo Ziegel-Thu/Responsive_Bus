@@ -8,7 +8,9 @@ from Vehicle.vehicle import Vehicle
 import time
 import sys
 import os
-
+import pandas as pd
+import numpy as np
+from gurobipy import *
 class VRPPD:
     def __init__(self, demands: DemandList, start_node_id: int, end_node_id: int, num_vehicles: int):
         self.demands = demands
@@ -468,8 +470,175 @@ def main():
                     sys.stdout = f
                     cost,load,time =ALNS(initial_demands, new_demands, max_iterations, start_node_id, end_node_id, num_vehicles )
                     sys.stdout = original_stdout
-                    print(k,a,b,cost,load,time)      
+                    print(k,a,b,cost,load,time)
+
+class GurobiModel():
+    def __init__(self,k,a,b):
+        self.model = None
+        self.vehicle_number = k
+        self.crowdness = a
+        self.candidate = b
+        
+    def load_initial_data(self):
+        self.start_node_id, self.end_node_id, self.initial_demands = read_initial_demand(f"Data/demand/output_{self.vehicle_number}_{self.crowdness}_{self.candidate}_init.txt")
+        self.new_demands = read_new_demand(f"Data/demand/output_{self.vehicle_number}_{self.crowdness}_{self.candidate}_new.txt", self.initial_demands.get_num_demands())
+        self.vrppd = VRPPD(self.initial_demands, self.start_node_id, self.end_node_id, self.vehicle_number)
+        self.initial_solution = self.vrppd.vehicle_list
+        self.start_node = Node(self.start_node_id, -1, "start", 0)
+        self.end_node = Node(self.end_node_id, -1, "end", 0)
+
+    
+    def point_mapping(self):
+        count = 0
+        num_to_point: list[Node] = []
+        point_to_num = {}
+        for demand in self.initial_demands.get_all_demands():
+            for node in demand.get_pickup_nodes():
+                num_to_point.append(node)
+                point_to_num[node.get_id()] = count
+                count += 1
+            for node in demand.get_delivery_nodes():
+                num_to_point.append(node)
+                point_to_num[node.get_id()] = count
+                count += 1
+        for demand in self.new_demands.get_all_demands():
+            for node in demand.get_pickup_nodes():
+                num_to_point.append(node)
+                point_to_num[node.get_id()] = count
+                count += 1
+            for node in demand.get_delivery_nodes():
+                num_to_point.append(node)
+                point_to_num[node.get_id()] = count
+                count += 1
+        num_to_point.append(self.start_node)
+        point_to_num[self.start_node] = count
+        count += 1
+        num_to_point.append(self.end_node)
+        point_to_num[self.end_node] = count      
+        self.num_to_point = num_to_point
+        self.point_to_num = point_to_num
+        self.num_customers = self.new_demands.get_num_demands() + self.initial_demands.get_num_demands()
+        
+        
+    def build_model(self):
+        demands = copy.deepcopy(self.initial_demands.get_all_demands())
+        for demand in self.new_demands.get_all_demands():
+            demands.append(demand)
+        distance_data = pd.read_csv('Data/wangjing-newdis-expanded.csv').values
+        self.model = Model()
+        N = len(self.num_to_point)
+        M = self.num_customers
+        gurobi_distance = self.model.addVars (N, N+2, self.vehicle_number, vtype=GRB.BINARY, name="gurobi_distance")
+        gurobi_time = self.model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_time")
+        gurobi_overtime  = self.model.addVars(M, vtype=GRB.CONTINUOUS, name="gurobi_overtime")
+        gurobi_load = self.model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_load")
+        obj = LinExpr(0)
+        for i in range(N ):
+            for j in range(N):
+                for k in range(self.vehicle_number):
+                    if i != j:
+                        obj += gurobi_distance[i,j,k] * distance_data[self.num_to_point[i].get_id(), self.num_to_point[j].get_id()]
+        for j in range(M):
+            obj += 3 * gurobi_overtime[j]
+        
+        
+        self.model.setObjective(obj, GRB.MINIMIZE)
+
+        for vehicle in self.initial_solution:
+            for demand in vehicle.get_demand_list():
+                expr1 = LinExpr(0)
+                expr2 = LinExpr(0)
+                for node in demand.get_pickup_nodes():
+                    for j in range(N):
+                        if node.get_id() != self.num_to_point[j].get_id():
+                            expr1.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+                for node in demand.get_delivery_nodes():
+                    for j in range(N):
+                        if node.get_id() != self.num_to_point[j].get_id():
+                            expr2.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+                self.model.addConstr(expr1 == 1, name=f'init_pickup_{demand.get_index()}')
+                self.model.addConstr(expr2 == 1, name=f'init_delivery_{demand.get_index()}')
+                
+        for demand in self.new_demands.get_all_demands():
+            expr3 = LinExpr(0)
+            expr4 = LinExpr(0)
+            for node in demand.get_pickup_nodes():
+                for j in range(N):
+                    if node.get_id() != self.num_to_point[j].get_id():
+                        for k in range (self.vehicle_number):
+                            expr3.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+            for node in demand.get_delivery_nodes():
+                for j in range(N):
+                    if node.get_id() != self.num_to_point[j].get_id():
+                        for k in range (self.vehicle_number):
+                            expr4.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+            self.model.addConstr(expr3 == 1, name=f'new_pickup_{demand.get_index()}')
+            self.model.addConstr(expr4 == 1, name=f'new_delivery_{demand.get_index()}')
+        
+        for k in range(self.vehicle_number):
+            expr5 = LinExpr(0)
+            for j in range(N-2):
+                expr5.addTerms(1, gurobi_distance[j, N-1, k])
+                self.model.addConstr((gurobi_distance [j, N-1, k]==1)>>(6 - gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.end_node.get_id()][self.num_to_point[j].get_id()] >=0), name = f'last_point_{j}')
+            self.model.addConstr(expr5 == 1, name=f'cons_end_{k}')
+            
+        for k in range(self.vehicle_number):
+            expr6 = LinExpr(0)
+            for j in range(N-2):
+                expr6.addTerms(1, gurobi_distance[N-2, j, k])
+                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.start_node_id][self.num_to_point[j].get_id()]) >=0), name = f'first_point_{j}' )
+                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== 0),name = f'first_load_{j}')
+            expr6.addTerms(1,gurobi_distance[N-2, N-1, k])
+            self.model.addConstr(expr6 == 1, name=f'cons_start_{k}')
+        
+        for k in range(self.vehicle_number):
+            for i in range(0, N-2):
+                expr7 = LinExpr(0)
+                for j in range (N):
+                    if i != j:
+                        expr7.addTerms(1, gurobi_distance[i, j, k])
+                        expr7.addTerms(-1, gurobi_distance[j, i, k])
+                self.model.addConstr(expr7 == 0, name=f'cons_in_and_out_{i}_{k}')
+        
+        for i in range (N-2):
+            for j in range (N-2):
+                for k in range (self.vehicle_number):
+                    if i !=j :
+                        self.model.addConstr((gurobi_distance[i,j,k] ==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self.num_to_point[j].get_type() == "delivery") ] - gurobi_time[self.num_to_point[i].get_demand_index() + M * (self.num_to_point[i].get_type() == "delivery") ] - distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[j].get_id()]) >= 0), name = f'distance_{i}_{j}_{k}')
+                
+        for l in range (M):
+            self.model.addConstr(gurobi_time[l] <= gurobi_time[l+M], name = f'order_{l}' )
+        for l in range (M):
+            self.model.addConstr(gurobi_time[l] >= demands[l].get_start_time(),name = f'start_window_{l}')
+        for l in range (M):
+            self.model.addConstr(gurobi_time[l+M] - demands[l].get_end_time() <= gurobi_overtime[l], name = f'end_window_{l}')
+        for l in range (M):
+            self.model.addConstr(gurobi_overtime[l] >= 0, name = f'penalty_{l}')
+        
+        for i in range(N-2):
+            for j in range (N-2):
+                if i != j:
+                    for k in range (self.vehicle_number):
+                        self.model.addConstr((gurobi_distance[i,j,k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] + demands[self.num_to_point[i].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== gurobi_load[self.num_to_point[j].get_demand_index() + M * (self. num_to_point[j].get_type() == "delivery")] ),name  = f'load_{i}_{j}_{k}')
+
+        for l in range (2* M):
+            self.model.addConstr(gurobi_load[l] <= 100, name = f'max_load{l}')
+    def optimize(self):
+        self.model.optimize()       
+def gurobimain():
+    for k in [1]:
+        for a in [3]:
+            for b in [0]:
+                model = GurobiModel(k,a,b)
+
+                model.load_initial_data()
+                model.point_mapping()
+                model.build_model()
+                model.optimize()
+
+
+    
 if __name__ == "__main__":
-    main()
+    gurobimain()
 
 

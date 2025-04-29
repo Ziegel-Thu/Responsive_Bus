@@ -409,8 +409,8 @@ def read_new_demand(file_path: str, num_initial_demands:int) -> DemandList:
 def main():
     if not os.path.exists("Data/Result"):
         os.makedirs("Data/Result")
-    for k in [1,3]:
-        for a in [3,6,9]:
+    for k in [1]:
+        for a in [9]:
             for b in [0,0.5,1]:
                 output_file = f"Data/Result_cut/result_{k}_{a}_{b}.txt"
                 global num_vehicles

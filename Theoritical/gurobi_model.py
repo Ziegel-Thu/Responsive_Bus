@@ -6,7 +6,7 @@ class GurobiModel:
     def __init__(self, demand_file, distance_file):
         self.demand_file = demand_file
         self.distance_file = distance_file
-        self.num_vehicles = 5
+        self.num_vehicles = 3
         self.vehicle_capacity = 100
         self.requirement_position = []
         self.demand = []
@@ -173,7 +173,7 @@ class GurobiModel:
 
 # 使用示例
 if __name__ == "__main__":
-    model = GurobiModel('New/Data/demand_data.csv', 'New/Data/wangjing-newdis-simplify.csv')
+    model = GurobiModel('../Realtime/Data/demand_data.csv', '../Realtime/Data/wangjing-newdis-simplify.csv')
     model.load_data()
     model.build_model()
     model.optimize()
