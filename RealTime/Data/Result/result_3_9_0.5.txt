@@ -7,7 +7,7 @@ vehicle  0
 2   35   delivery   28
 6   59   delivery   29
 3   18   delivery   17
-costs:  5.790837638134833 
+costs:  5.633843580771483 
 
 vehicle  1
 4   16   pickup   14
@@ -18,7 +18,7 @@ vehicle  1
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  5.265071619777469 
+costs:  5.161212741982249 
 
 vehicle  2
 5   30   pickup   12
@@ -27,24 +27,24 @@ vehicle  2
 5   108   delivery   12
 costs:  1.9106401406671878 
 
-total cost:  12.966549398579488 load_serviced 166 
+total cost:  12.705696463420919 load_serviced 166 
 
 
 Initial complemented solution generated
 vehicle  0
-21   68   pickup   21
 6   25   pickup   29
 2   60   pickup   28
 3   28   pickup   17
-2   35   delivery   28
 14   53   pickup   16
+2   35   delivery   28
+14   10   delivery   16
 6   59   delivery   29
 3   18   delivery   17
-24   122   pickup   15
-21   17   delivery   21
-14   10   delivery   16
-24   74   delivery   15
-costs:  18.875464321265923 
+9   67   pickup   13
+17   113   pickup   26
+9   65   delivery   13
+17   92   delivery   26
+costs:  31.57508385083316 
 
 vehicle  1
 4   16   pickup   14
@@ -55,88 +55,48 @@ vehicle  1
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  5.265071619777469 
+costs:  5.161212741982249 
 
 vehicle  2
+26   148   pickup   23
 5   30   pickup   12
+21   3   pickup   21
 0   21   pickup   20
 0   32   delivery   20
-12   117   pickup   12
+16   114   pickup   10
+26   202   delivery   23
+21   17   delivery   21
 5   108   delivery   12
-19   126   pickup   24
-17   113   pickup   26
-12   1   delivery   12
-19   86   delivery   24
-17   92   delivery   26
-costs:  4.111148232598524 
+10   22   pickup   10
+16   140   delivery   10
+10   98   delivery   10
+costs:  11.879794400589102 
 
-total cost:  28.251684173641916 load_serviced 280 
+total cost:  48.61609099340451 load_serviced 285 
 
-28.251684173641916 280
+48.61609099340451 285
 
 Iteration:  0
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  1
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  2
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  3
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  4
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  5
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  6
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  7
 
 Iteration:  8
-repair not found
-repair not found
-repair not found
 
 Iteration:  9
-repair not found
 
 Iteration:  10
-repair not found
 
 Iteration:  11
 
@@ -235,20 +195,14 @@ Iteration:  57
 Iteration:  58
 
 Iteration:  59
-repair not found
 
 Iteration:  60
 
 Iteration:  61
-repair not found
 
 Iteration:  62
-repair not found
-repair not found
 
 Iteration:  63
-repair not found
-repair not found
 
 Iteration:  64
 
@@ -265,7 +219,6 @@ Iteration:  69
 Iteration:  70
 
 Iteration:  71
-repair not found
 
 Iteration:  72
 
@@ -302,26 +255,18 @@ Iteration:  87
 Iteration:  88
 
 Iteration:  89
-repair not found
 
 Iteration:  90
-repair not found
 
 Iteration:  91
-repair not found
-repair not found
 
 Iteration:  92
-repair not found
 
 Iteration:  93
-repair not found
-repair not found
 
 Iteration:  94
 
 Iteration:  95
-repair not found
 
 Iteration:  96
 
@@ -360,15 +305,10 @@ Iteration:  112
 Iteration:  113
 
 Iteration:  114
-repair not found
 
 Iteration:  115
-repair not found
-repair not found
-repair not found
 
 Iteration:  116
-repair not found
 
 Iteration:  117
 
@@ -545,93 +485,60 @@ Iteration:  202
 Iteration:  203
 
 Iteration:  204
-repair not found
 
 Iteration:  205
-repair not found
 
 Iteration:  206
-repair not found
 
 Iteration:  207
-repair not found
 
 Iteration:  208
 
 Iteration:  209
 
 Iteration:  210
-repair not found
 
 Iteration:  211
-repair not found
 
 Iteration:  212
-repair not found
 
 Iteration:  213
-repair not found
 
 Iteration:  214
-repair not found
 
 Iteration:  215
 
 Iteration:  216
-repair not found
 
 Iteration:  217
-repair not found
 
 Iteration:  218
-repair not found
 
 Iteration:  219
-repair not found
 
 Iteration:  220
 
 Iteration:  221
-repair not found
 
 Iteration:  222
-repair not found
 
 Iteration:  223
-repair not found
 
 Iteration:  224
-repair not found
 
 Iteration:  225
 
 Iteration:  226
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  227
-repair not found
 
 Iteration:  228
-repair not found
 
 Iteration:  229
-repair not found
 
 Iteration:  230
 
 Iteration:  231
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  232
 
@@ -668,34 +575,22 @@ Iteration:  247
 Iteration:  248
 
 Iteration:  249
-repair not found
-repair not found
 
 Iteration:  250
-repair not found
 
 Iteration:  251
-repair not found
-repair not found
 
 Iteration:  252
-repair not found
 
 Iteration:  253
 
 Iteration:  254
 
 Iteration:  255
-repair not found
-repair not found
 
 Iteration:  256
-repair not found
-repair not found
 
 Iteration:  257
-repair not found
-repair not found
 
 Iteration:  258
 
@@ -810,16 +705,12 @@ Iteration:  312
 Iteration:  313
 
 Iteration:  314
-repair not found
-repair not found
 
 Iteration:  315
 
 Iteration:  316
 
 Iteration:  317
-repair not found
-repair not found
 
 Iteration:  318
 
@@ -866,13 +757,10 @@ Iteration:  338
 Iteration:  339
 
 Iteration:  340
-repair not found
 
 Iteration:  341
-repair not found
 
 Iteration:  342
-repair not found
 
 Iteration:  343
 
@@ -1077,10 +965,8 @@ Iteration:  442
 Iteration:  443
 
 Iteration:  444
-repair not found
 
 Iteration:  445
-repair not found
 
 Iteration:  446
 
@@ -1199,32 +1085,33 @@ vehicle  0
 2   35   delivery   28
 13   37   delivery   24
 6   59   delivery   29
-14   53   pickup   16
-14   10   delivery   16
-3   18   delivery   17
-costs:  6.798204565189906 
-
-vehicle  1
 20   91   pickup   12
 20   6   delivery   12
-24   79   pickup   15
-24   74   delivery   15
+3   18   delivery   17
+costs:  5.877379772841179 
+
+vehicle  1
+21   68   pickup   21
+26   147   pickup   23
 4   16   pickup   14
-22   196   pickup   18
+16   114   pickup   10
+18   129   pickup   21
+26   202   delivery   23
+18   187   delivery   21
+16   140   delivery   10
 7   64   pickup   26
 17   113   pickup   26
 8   40   pickup   10
 8   41   delivery   10
 17   92   delivery   26
 1   19   pickup   10
+21   38   delivery   21
 1   70   delivery   10
-22   87   delivery   18
 4   13   delivery   14
 7   63   delivery   26
-costs:  6.210692741795661 
+costs:  6.224864774755429 
 
 vehicle  2
-21   68   pickup   21
 5   30   pickup   12
 11   15   pickup   11
 0   21   pickup   20
@@ -1232,27 +1119,26 @@ vehicle  2
 9   67   pickup   13
 23   48   pickup   29
 9   65   delivery   13
-15   190   pickup   21
+19   126   pickup   24
+14   53   pickup   16
 11   44   delivery   11
 12   117   pickup   12
-5   108   delivery   12
-23   5   delivery   29
+14   10   delivery   16
+24   79   pickup   15
+24   74   delivery   15
 12   1   delivery   12
-26   147   pickup   23
-16   114   pickup   10
-18   129   pickup   21
-18   187   delivery   21
-26   202   delivery   23
-19   123   pickup   24
-16   140   delivery   10
-10   22   pickup   10
+23   5   delivery   29
+5   108   delivery   12
+15   190   pickup   21
+22   199   pickup   18
+25   179   pickup   21
+22   106   delivery   18
 19   86   delivery   24
-25   160   pickup   21
-21   17   delivery   21
-15   82   delivery   21
-25   155   delivery   21
+10   22   pickup   10
+25   204   delivery   21
 10   98   delivery   10
-costs:  5.4053216258716095 
+15   82   delivery   21
+costs:  5.851991640325259 
 
-total cost:  18.414218932857175 load_serviced 493 
+total cost:  17.954236187921868 load_serviced 493 
 

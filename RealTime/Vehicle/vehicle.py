@@ -1,6 +1,6 @@
 from Node.node import Node
 from Demands.demands import DemandList, Demand
-from Parameters import vehicle_capacity, distance_matrix, Penalty_Coefficient,maximum_time_limit
+from Parameters2 import vehicle_capacity, distance_matrix, Penalty_Coefficient,maximum_time_limit
 import copy
 import random
 
@@ -127,7 +127,7 @@ class Vehicle:
             return []
         else:
             self.route.time = [0] * len(self.route.nodes)
-            self.route.time[0] = distance_matrix[self.get_start_node_id()][self.get_first_node().get_id()]
+            self.route.time[0] = max(distance_matrix[self.get_start_node_id()][self.get_first_node().get_id()], demandlist.get_demand(self.get_first_node().get_demand_index()).get_start_time())
             for i in range(len(self.route.nodes) - 1):
                 current_time = self.route.time[i]
                 current_node = self.route.nodes[i+1]

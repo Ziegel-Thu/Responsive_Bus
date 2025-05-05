@@ -233,8 +233,10 @@ def calculate_cost(vehicle_list: list[Vehicle], demands: DemandList):
 def print_solution(vehicle_list: list[Vehicle], demands: DemandList):
     for vehicle in vehicle_list:
         print("vehicle ",vehicle.get_index())
+        i = 0
         for node in vehicle.get_route().nodes:
-            print(node.get_demand_index()," ",node.get_id()," ",node.get_type()," ",node.get_demand_load())
+            print(node.get_demand_index()," ",node.get_id()," ",node.get_type()," ",node.get_demand_load()," ",vehicle.route.time[i])
+            i +=1
         vehicle_cost = vehicle.calculate_total_cost(demands)
         print("costs: ",vehicle_cost,"\n")
     total_cost, load_serviced= calculate_cost(vehicle_list, demands)
@@ -340,7 +342,7 @@ def ALNS(initial_demands: DemandList, new_demands: DemandList, max_iterations: i
                 most_load = temporary_most_load
             temperature *= cooling_rate
         sum =0
-        for vehicle in vehicle_list:
+        for vehicle in current_solution:
             sum += len(vehicle.route.nodes)
     print("\nbest solution")
     print_solution(best_solution, demands)
@@ -411,18 +413,18 @@ def main():
         os.makedirs("Data/Result")
     for k in [1]:
         for a in [9]:
-            for b in [0,0.5,1]:
-                output_file = f"Data/Result/result_{k}_{a}_{b}.txt"
+            for b in [0]:
+                #output_file = f"Data/Result/result_{k}_{a}_{b}.txt"
                 global num_vehicles
                 num_vehicles = k
                 start_node_id, end_node_id, initial_demands = read_initial_demand(f"Data/demand/output_{k}_{a}_{b}_init.txt")
                 num_initial_demands = initial_demands.get_num_demands()
                 new_demands = read_new_demand(f"Data/demand/output_{k}_{a}_{b}_new.txt", num_initial_demands)
-                with open(output_file, 'w') as f:
-                    original_stdout = sys.stdout
-                    sys.stdout = f
-                    cost,load,time =ALNS(initial_demands, new_demands, max_iterations, start_node_id, end_node_id, num_vehicles)
-                    sys.stdout = original_stdout
+                #with open(output_file, 'w') as f:
+                    #original_stdout = sys.stdout
+                    #sys.stdout = f
+                cost,load,time =ALNS(initial_demands, new_demands, max_iterations, start_node_id, end_node_id, num_vehicles)
+                    #sys.stdout = original_stdout
                 print(k,a,b,cost,load,time)      
 if __name__ == "__main__":
     main()

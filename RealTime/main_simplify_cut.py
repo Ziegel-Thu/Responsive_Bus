@@ -407,12 +407,12 @@ def read_new_demand(file_path: str, num_initial_demands:int) -> DemandList:
     return DemandList(demands)
 
 def main():
-    if not os.path.exists("Data/Result"):
-        os.makedirs("Data/Result")
-    for k in [1]:
-        for a in [9]:
-            for b in [0,0.5,1]:
-                output_file = f"Data/Result_cut/result_{k}_{a}_{b}.txt"
+    if not os.path.exists("Data/Result_up"):
+        os.makedirs("Data/Result_up")
+    for k in [5]:
+        for a in [6]:
+            for b in [0.5]:
+                output_file = f"Data/Result_up/result_{k}_{a}_{b}.txt"
                 global num_vehicles
                 num_vehicles = k
                 start_node_id, end_node_id, initial_demands = read_initial_demand(f"Data/demand/output_{k}_{a}_{b}_init.txt")

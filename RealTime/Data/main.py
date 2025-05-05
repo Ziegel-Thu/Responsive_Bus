@@ -32,7 +32,7 @@ def find_array_place(point, array):
 if __name__ == "__main__":
     all_arrays, multiple_arrays = read_and_process_groups('groups.txt')
     for k in [1]:
-        for a in [9]:
+        for a in [6]:
             start = random.randint(0, 72)
             end = random.randint(0, 72)
             while start == end:

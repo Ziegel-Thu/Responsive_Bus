@@ -1,32 +1,32 @@
 Basic case generated
 
 vehicle  0
-1   33   pickup   22
-1   55   delivery   22
-0   37   pickup   21
-0   11   delivery   21
-costs:  2.5935532763957907 
+0   66   pickup   22
+1   139   pickup   12
+1   45   delivery   12
+0   60   delivery   22
+costs:  1.4796982217167072 
 
-total cost:  2.5935532763957907 load_serviced 43 
+total cost:  1.4796982217167072 load_serviced 34 
 
 
 Initial complemented solution generated
 vehicle  0
-1   33   pickup   22
-2   6   pickup   25
-5   110   pickup   28
-1   55   delivery   22
-3   31   pickup   16
-3   47   delivery   16
-0   37   pickup   21
-5   20   delivery   28
-0   11   delivery   21
-2   12   delivery   25
-costs:  14.134387593476589 
+5   120   pickup   17
+0   66   pickup   22
+5   22   delivery   17
+2   47   pickup   10
+2   19   delivery   10
+1   139   pickup   12
+1   45   delivery   12
+3   51   pickup   24
+3   69   delivery   24
+0   60   delivery   22
+costs:  12.877479032770406 
 
-total cost:  14.134387593476589 load_serviced 112 
+total cost:  12.877479032770406 load_serviced 85 
 
-14.134387593476589 112
+12.877479032770406 85
 
 Iteration:  0
 
@@ -1030,19 +1030,19 @@ Iteration:  499
 
 best solution
 vehicle  0
-1   33   pickup   22
-5   110   pickup   28
-1   55   delivery   22
-3   31   pickup   16
-2   6   pickup   25
-4   3   pickup   22
-4   85   delivery   22
-2   12   delivery   25
-3   47   delivery   16
-0   37   pickup   21
-5   20   delivery   28
-0   11   delivery   21
-costs:  7.242906360335269 
+3   51   pickup   24
+3   69   delivery   24
+5   120   pickup   17
+0   66   pickup   22
+5   22   delivery   17
+2   47   pickup   10
+2   19   delivery   10
+4   7   pickup   11
+4   13   delivery   11
+1   139   pickup   12
+1   45   delivery   12
+0   60   delivery   22
+costs:  15.429374944560948 
 
-total cost:  7.242906360335269 load_serviced 134 
+total cost:  15.429374944560948 load_serviced 96 
 

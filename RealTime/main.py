@@ -528,18 +528,27 @@ class GurobiModel():
         self.model = Model()
         N = len(self.num_to_point)
         M = self.num_customers
-        gurobi_distance = self.model.addVars (N, N+2, self.vehicle_number, vtype=GRB.BINARY, name="gurobi_distance")
+        gurobi_distance = self.model.addVars (N, N, self.vehicle_number, vtype=GRB.BINARY, name="gurobi_distance")
+
         gurobi_time = self.model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_time")
-        gurobi_overtime  = self.model.addVars(M, vtype=GRB.CONTINUOUS, name="gurobi_overtime")
+
         gurobi_load = self.model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_load")
+        gurobi_overtime = self.model.addVars(M, vtype=GRB.CONTINUOUS, name="gurobi_overtime")
+
+
         obj = LinExpr(0)
-        for i in range(N ):
+        for i in range(N):
             for j in range(N):
                 for k in range(self.vehicle_number):
                     if i != j:
-                        obj += gurobi_distance[i,j,k] * distance_data[self.num_to_point[i].get_id(), self.num_to_point[j].get_id()]
+                        obj += gurobi_distance[i, j, k] * distance_matrix[self.num_to_point[i].get_id()][ self.num_to_point[j].get_id()]
         for j in range(M):
             obj += 3 * gurobi_overtime[j]
+
+
+
+        
+
         
         
         self.model.setObjective(obj, GRB.MINIMIZE)
@@ -558,6 +567,156 @@ class GurobiModel():
                             expr2.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
                 self.model.addConstr(expr1 == 1, name=f'init_pickup_{demand.get_index()}')
                 self.model.addConstr(expr2 == 1, name=f'init_delivery_{demand.get_index()}')
+
+                
+        for demand in self.new_demands.get_all_demands():
+            expr3 = LinExpr(0)
+            expr4 = LinExpr(0)
+
+            for node in demand.get_pickup_nodes():
+                for j in range(N):
+                    if node.get_id() != self.num_to_point[j].get_id():
+                        for k in range (self.vehicle_number):
+                            expr3.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, k])
+            for node in demand.get_delivery_nodes():
+                for j in range(N):
+                    if node.get_id() != self.num_to_point[j].get_id():
+                        for k in range (self.vehicle_number):
+                            expr4.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, k])
+            self.model.addConstr(expr3 == 1, name=f'new_pickup_{demand.get_index()}')
+            self.model.addConstr(expr4 == 1, name=f'new_delivery_{demand.get_index()}')
+
+        
+        for k in range(self.vehicle_number):
+            expr5 = LinExpr(0)
+
+            for j in range(N-2):
+                expr5.addTerms(1, gurobi_distance[j, N-1, k])
+                self.model.addConstr((gurobi_distance[j, N-1, k]==1)>>(10 - gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.end_node.get_id()][self.num_to_point[j].get_id()] >=0), name = f'last_point_{j}')
+
+                self.model.addConstr(gurobi_distance[N-1,j,k]== 0, name = f'no_early_{k}')
+
+            self.model.addConstr(expr5 == 1, name=f'cons_end_{k}')
+
+    
+        for k in range(self.vehicle_number):
+            expr6 = LinExpr(0)
+            for j in range(N-2):
+                expr6.addTerms(1, gurobi_distance[N-2, j, k])
+                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.start_node_id][self.num_to_point[j].get_id()]) >=0), name = f'first_point_{j}' )
+
+                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] + demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== 0),name = f'first_load_{j}')
+
+                self.model.addConstr(gurobi_distance[j, N-2,k]==0, name =f'no_return_{k}')
+            expr6.addTerms(1,gurobi_distance[N-2, N-1, k])
+
+            self.model.addConstr(expr6 == 1, name=f'cons_start_{k}')
+
+        
+        for k in range(self.vehicle_number):
+            for i in range(0, N-2):
+                expr7 = LinExpr(0)
+                for j in range (N):
+                    if i != j:
+                        expr7.addTerms(1, gurobi_distance[i, j, k])
+                        expr7.addTerms(-1, gurobi_distance[j, i, k])
+
+                self.model.addConstr(expr7 == 0, name=f'cons_in_and_out_{i}_{k}')
+
+        
+        for i in range (N-2):
+            for j in range (N-2):
+                for k in range (self.vehicle_number):
+                    if i !=j :
+                        self.model.addConstr((gurobi_distance[i,j,k] ==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self.num_to_point[j].get_type() == "delivery") ] - gurobi_time[self.num_to_point[i].get_demand_index() + M * (self.num_to_point[i].get_type() == "delivery") ] - distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[j].get_id()]) >= 0), name = f'distance_{i}_{j}_{k}')
+
+        for l in range (M):
+            self.model.addConstr(gurobi_time[l] <= gurobi_time[l+M], name = f'order_{l}' )
+        for l in range (M):
+            for node in demands[l].get_pickup_nodes():
+                self.model.addConstr((gurobi_time[l] >= demands[l].get_start_time()) ,name = f'start_window_{l}')
+        for l in range (M):
+            self.model.addConstr(gurobi_time[l+M] - demands[l].get_end_time() <= gurobi_overtime[l], name = f'end_window_{l}')
+        for l in range (M):
+            self.model.addConstr(gurobi_overtime[l] >= 0, name = f'penalty_{l}')
+        
+        for i in range(N-2):
+            for j in range (N-2):
+                if i != j:
+                    for k in range (self.vehicle_number):
+                        self.model.addConstr((gurobi_distance[i,j,k]==1)>>(gurobi_load[self.num_to_point[i].get_demand_index() + M * int(self. num_to_point[i].get_type() == "delivery")] - demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== gurobi_load[self.num_to_point[j].get_demand_index() + M * (self. num_to_point[j].get_type() == "delivery")] ),name  = f'load_{i}_{j}_{k}')
+
+        for l in range (2* M):
+            self.model.addConstr(gurobi_load[l] <= 100, name = f'max_load{l}')
+        
+
+        
+        
+    def optimize(self):
+        self.model.optimize()      
+    def print(self):
+        if self.model.status == GRB.OPTIMAL:
+            for i in range(8):
+                for j in range(8):
+                    if i !=j :
+                        print(i,j,self.model.getVarByName(f"gurobi_distance[{i},{j},{0}]").x, distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[j].get_id()])
+            for i in range (3):
+                print(i, self.model.getVarByName(f"gurobi_time[{i}]").x)
+                print(i, self.num_to_point[i].demand_index + self.num_customers * (self.num_to_point[i].get_type() == 'delivery'))
+        else:
+            print("No optimal solution found.")
+        sum=0
+        for i in range (5):
+            sum +=distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[i+1].get_id()]
+        sum += distance_matrix[self.num_to_point[6].get_id()][self.num_to_point[0].get_id()]
+        sum += distance_matrix[self.num_to_point[5].get_id()][self.num_to_point[7].get_id()]
+        print(sum)
+
+    def verify_solution(self):
+        demands = copy.deepcopy(self.initial_demands.get_all_demands())
+        for demand in self.new_demands.get_all_demands():
+            demands.append(demand)
+        # 创建一个新的模型用于验证
+        verify_model = Model()
+        
+        # 添加与原模型相同的变量
+        N = 8
+        M = 3
+        
+        gurobi_distance = verify_model.addVars(N, N, self.vehicle_number, vtype=GRB.BINARY, name="gurobi_distance")
+        gurobi_time = verify_model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_time")
+        gurobi_overtime = verify_model.addVars(M, vtype=GRB.CONTINUOUS, name="gurobi_overtime")
+        gurobi_load = verify_model.addVars(2 * M, vtype=GRB.CONTINUOUS, name="gurobi_load")
+        
+        # 设置你想要验证的解
+        # 例如，设置特定的路径
+        for i in range(N):
+            for j in range(N):
+                for k in range(1):
+                    gurobi_distance[i,j,k].start = 0
+        gurobi_distance[6,0,0].lb = 1
+        gurobi_distance[0,1,0].lb = 1
+        gurobi_distance[1,2,0].lb = 1
+        gurobi_distance[2,3,0].lb = 1
+        gurobi_distance[3,4,0].lb = 1
+        gurobi_distance[4,5,0].lb = 1
+        gurobi_distance[5,7,0].lb = 1
+
+        
+        for vehicle in self.initial_solution:
+            for demand in vehicle.get_demand_list():
+                expr1 = LinExpr(0)
+                expr2 = LinExpr(0)
+                for node in demand.get_pickup_nodes():
+                    for j in range(N):
+                        if node.get_id() != self.num_to_point[j].get_id():
+                            expr1.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+                for node in demand.get_delivery_nodes():
+                    for j in range(N):
+                        if node.get_id() != self.num_to_point[j].get_id():
+                            expr2.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
+                verify_model.addConstr(expr1 == 1, name=f'init_pickup_{demand.get_index()}')
+                verify_model.addConstr(expr2 == 1, name=f'init_delivery_{demand.get_index()}')
                 
         for demand in self.new_demands.get_all_demands():
             expr3 = LinExpr(0)
@@ -572,24 +731,28 @@ class GurobiModel():
                     if node.get_id() != self.num_to_point[j].get_id():
                         for k in range (self.vehicle_number):
                             expr4.addTerms(1, gurobi_distance[self.point_to_num[node.get_id()], j, vehicle.get_index()])
-            self.model.addConstr(expr3 == 1, name=f'new_pickup_{demand.get_index()}')
-            self.model.addConstr(expr4 == 1, name=f'new_delivery_{demand.get_index()}')
+            verify_model.addConstr(expr3 == 1, name=f'new_pickup_{demand.get_index()}')
+            verify_model.addConstr(expr4 == 1, name=f'new_delivery_{demand.get_index()}')
         
         for k in range(self.vehicle_number):
             expr5 = LinExpr(0)
             for j in range(N-2):
                 expr5.addTerms(1, gurobi_distance[j, N-1, k])
-                self.model.addConstr((gurobi_distance [j, N-1, k]==1)>>(6 - gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.end_node.get_id()][self.num_to_point[j].get_id()] >=0), name = f'last_point_{j}')
-            self.model.addConstr(expr5 == 1, name=f'cons_end_{k}')
+                verify_model.addConstr((gurobi_distance[j, N-1, k]==1)>>(6 - gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.end_node.get_id()][self.num_to_point[j].get_id()] >=0), name = f'last_point_{j}')
+                verify_model.addConstr(gurobi_distance[N-1,j,k]== 0, name = f'no_early_{k}')
+            verify_model.addConstr(expr5 == 1, name=f'cons_end_{k}')
             
+
         for k in range(self.vehicle_number):
             expr6 = LinExpr(0)
             for j in range(N-2):
                 expr6.addTerms(1, gurobi_distance[N-2, j, k])
-                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.start_node_id][self.num_to_point[j].get_id()]) >=0), name = f'first_point_{j}' )
-                self.model.addConstr((gurobi_distance[N-2, j, k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== 0),name = f'first_load_{j}')
+                verify_model.addConstr((gurobi_distance[N-2, j, k]==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] - distance_matrix[self.start_node_id][self.num_to_point[j].get_id()]) >=0), name = f'first_point_{j}' )
+                verify_model.addConstr((gurobi_distance[N-2, j, k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] + demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== 0),name = f'first_load_{j}')
+                verify_model.addConstr(gurobi_distance[j, N-2,k]==0, name =f'no_return_{k}')
             expr6.addTerms(1,gurobi_distance[N-2, N-1, k])
-            self.model.addConstr(expr6 == 1, name=f'cons_start_{k}')
+
+            verify_model.addConstr(expr6 == 1, name=f'cons_start_{k}')
         
         for k in range(self.vehicle_number):
             for i in range(0, N-2):
@@ -598,43 +761,59 @@ class GurobiModel():
                     if i != j:
                         expr7.addTerms(1, gurobi_distance[i, j, k])
                         expr7.addTerms(-1, gurobi_distance[j, i, k])
-                self.model.addConstr(expr7 == 0, name=f'cons_in_and_out_{i}_{k}')
+                verify_model.addConstr(expr7 == 0, name=f'cons_in_and_out_{i}_{k}')
         
         for i in range (N-2):
             for j in range (N-2):
                 for k in range (self.vehicle_number):
                     if i !=j :
-                        self.model.addConstr((gurobi_distance[i,j,k] ==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self.num_to_point[j].get_type() == "delivery") ] - gurobi_time[self.num_to_point[i].get_demand_index() + M * (self.num_to_point[i].get_type() == "delivery") ] - distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[j].get_id()]) >= 0), name = f'distance_{i}_{j}_{k}')
+                        verify_model.addConstr((gurobi_distance[i,j,k] ==1)>>((gurobi_time[self.num_to_point[j].get_demand_index() + M * int(self.num_to_point[j].get_type() == "delivery") ] - gurobi_time[self.num_to_point[i].get_demand_index() + M * (self.num_to_point[i].get_type() == "delivery") ] - distance_matrix[self.num_to_point[i].get_id()][self.num_to_point[j].get_id()]) >= 0), name = f'distance_{i}_{j}_{k}')
                 
         for l in range (M):
-            self.model.addConstr(gurobi_time[l] <= gurobi_time[l+M], name = f'order_{l}' )
+            verify_model.addConstr(gurobi_time[l] <= gurobi_time[l+M], name = f'order_{l}' )
+        
         for l in range (M):
-            self.model.addConstr(gurobi_time[l] >= demands[l].get_start_time(),name = f'start_window_{l}')
+            expr10 = LinExpr(0)
+            for k in range (self.vehicle_number):
+                for node in demands[l].get_pickup_nodes():
+                    expr10.addTerms(1, gurobi_distance[N-2, self.point_to_num(node),k])
+            verify_model.addConstr((expr10<0.5)>>(gurobi_time[l] >= demands[l].get_start_time()),name = f'start_window_{l}')
         for l in range (M):
-            self.model.addConstr(gurobi_time[l+M] - demands[l].get_end_time() <= gurobi_overtime[l], name = f'end_window_{l}')
+            verify_model.addConstr(gurobi_time[l+M] - demands[l].get_end_time() <= gurobi_overtime[l], name = f'end_window_{l}')
         for l in range (M):
-            self.model.addConstr(gurobi_overtime[l] >= 0, name = f'penalty_{l}')
+            verify_model.addConstr(gurobi_overtime[l] >= 0, name = f'penalty_{l}')
         
         for i in range(N-2):
             for j in range (N-2):
                 if i != j:
                     for k in range (self.vehicle_number):
-                        self.model.addConstr((gurobi_distance[i,j,k]==1)>>(gurobi_load[self.num_to_point[j].get_demand_index() + M * int(self. num_to_point[j].get_type() == "delivery")] + demands[self.num_to_point[i].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== gurobi_load[self.num_to_point[j].get_demand_index() + M * (self. num_to_point[j].get_type() == "delivery")] ),name  = f'load_{i}_{j}_{k}')
+                        verify_model.addConstr((gurobi_distance[i,j,k]==1)>>(gurobi_load[self.num_to_point[i].get_demand_index() + M * int(self. num_to_point[i].get_type() == "delivery")] + demands[self.num_to_point[j].get_demand_index()].demand_load* (2* (self. num_to_point[j].get_type() == "delivery") - 1)== gurobi_load[self.num_to_point[j].get_demand_index() + M * (self. num_to_point[j].get_type() == "delivery")] ),name  = f'load_{i}_{j}_{k}')
 
         for l in range (2* M):
-            self.model.addConstr(gurobi_load[l] <= 100, name = f'max_load{l}')
-    def optimize(self):
-        self.model.optimize()       
+            verify_model.addConstr(gurobi_load[l] <= 100, name = f'max_load{l}')
+        
+        # 更新模型
+        verify_model.update()
+        verify_model.optimize
+        # 验证解的可行性    
+        verify_model.computeIIS()
+        for c in verify_model.getConstrs():
+            if c.IISConstr:
+                print(f"Constraint {c.ConstrName} is violated")
+            
+        
 def gurobimain():
     for k in [1]:
         for a in [3]:
-            for b in [0]:
+            for b in [0.5]:
                 model = GurobiModel(k,a,b)
 
                 model.load_initial_data()
                 model.point_mapping()
                 model.build_model()
+                #model.verify_solution()
                 model.optimize()
+                #model.print()
 
 
     

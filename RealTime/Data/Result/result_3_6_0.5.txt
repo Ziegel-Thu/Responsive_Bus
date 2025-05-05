@@ -27,40 +27,46 @@ total cost:  6.422345070049449 load_serviced 113
 Initial complemented solution generated
 vehicle  0
 3   65   pickup   18
-8   104   pickup   15
+12   70   pickup   10
 1   55   pickup   20
-8   1   delivery   15
 3   57   delivery   18
+12   15   delivery   10
 1   10   delivery   20
-costs:  9.874398387602902 
+costs:  3.389064910909158 
 
 vehicle  1
 5   22   pickup   20
-16   7   pickup   15
-16   127   delivery   15
 5   58   delivery   20
+11   156   pickup   26
 2   5   pickup   14
-12   72   pickup   10
-12   15   delivery   10
+13   52   pickup   10
 2   128   delivery   14
-costs:  21.76978838967115 
+8   104   pickup   15
+10   83   pickup   29
+10   133   delivery   29
+13   41   delivery   10
+11   177   delivery   26
+8   1   delivery   15
+costs:  17.962504654719126 
 
 vehicle  2
+9   25   pickup   29
+6   124   pickup   25
 0   14   pickup   16
-10   83   pickup   29
+6   39   delivery   25
 4   6   pickup   25
-10   133   delivery   29
-11   156   pickup   26
+9   60   delivery   29
+15   38   pickup   10
 0   51   delivery   16
-11   177   delivery   26
 4   21   delivery   25
-13   48   pickup   10
-13   130   delivery   10
-costs:  10.991144969854918 
+7   31   pickup   22
+7   112   delivery   22
+15   3   delivery   10
+costs:  32.84876183941356 
 
-total cost:  42.63533174712897 load_serviced 218 
+total cost:  54.20033140504185 load_serviced 289 
 
-42.63533174712897 218
+54.20033140504185 289
 
 Iteration:  0
 
@@ -1068,9 +1074,9 @@ vehicle  0
 11   156   pickup   26
 8   104   pickup   15
 8   1   delivery   15
+13   41   delivery   10
 3   65   pickup   18
 1   55   pickup   20
-13   130   delivery   10
 3   57   delivery   18
 11   177   delivery   26
 7   31   pickup   22
@@ -1098,13 +1104,13 @@ vehicle  2
 6   124   pickup   25
 0   51   delivery   16
 16   7   pickup   15
-14   0   pickup   22
 16   73   delivery   15
+14   0   pickup   22
 6   39   delivery   25
 10   83   pickup   29
 14   46   delivery   22
 10   133   delivery   29
-12   15   delivery   10
+12   94   delivery   10
 4   21   delivery   25
 costs:  3.154792900535772 
 

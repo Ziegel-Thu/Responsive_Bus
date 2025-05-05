@@ -1,32 +1,32 @@
 Basic case generated
 
 vehicle  0
-1   33   pickup   22
-1   55   delivery   22
-0   37   pickup   21
-0   11   delivery   21
-costs:  2.5935532763957907 
+0   66   pickup   22   1.09
+1   139   pickup   12   1.09
+1   45   delivery   12   1.3416859768048701
+0   60   delivery   22   1.547899497183265
+costs:  1.4796982217167072 
 
-total cost:  2.5935532763957907 load_serviced 43 
+total cost:  1.4796982217167072 load_serviced 34 
 
 
 Initial complemented solution generated
 vehicle  0
-1   33   pickup   22
-1   55   delivery   22
-2   6   pickup   25
-0   37   pickup   21
-2   12   delivery   25
-0   11   delivery   21
-3   31   pickup   16
-5   110   pickup   28
-3   47   delivery   16
-5   20   delivery   28
-costs:  6.135182534392297 
+5   120   pickup   17   1.55
+0   66   pickup   22   1.9050137478615596
+4   11   pickup   11   2.9478056326496835
+2   47   pickup   10   3.689192360535717
+1   139   pickup   12   4.044206108397277
+1   45   delivery   12   4.295892085202147
+5   22   delivery   17   4.647730043231971
+2   19   delivery   10   5.2679780468006285
+0   60   delivery   22   5.66857622588418
+4   12   delivery   11   5.856677438981307
+costs:  16.95720857699718 
 
-total cost:  6.135182534392297 load_serviced 112 
+total cost:  16.95720857699718 load_serviced 72 
 
-6.135182534392297 112
+16.95720857699718 72
 
 Iteration:  0
 
@@ -1030,19 +1030,19 @@ Iteration:  499
 
 best solution
 vehicle  0
-2   6   pickup   25
-5   110   pickup   28
-5   20   delivery   28
-1   33   pickup   22
-2   12   delivery   25
-1   55   delivery   22
-0   37   pickup   21
-3   31   pickup   16
-0   11   delivery   21
-4   68   pickup   22
-3   47   delivery   16
-4   85   delivery   22
-costs:  4.823308532105997 
+0   66   pickup   22   1.09
+1   139   pickup   12   1.09
+1   45   delivery   12   1.3416859768048701
+0   60   delivery   22   1.547899497183265
+3   51   pickup   24   2.293021226245259
+4   11   pickup   11   2.94
+3   69   delivery   24   3.388880320569475
+5   120   pickup   17   3.800869173987555
+2   47   pickup   10   3.800869173987555
+2   19   delivery   10   4.001625822118224
+4   12   delivery   11   4.511375652679736
+5   22   delivery   17   4.7639925767297955
+costs:  4.3298936044200556 
 
-total cost:  4.823308532105997 load_serviced 134 
+total cost:  4.3298936044200556 load_serviced 96 
 

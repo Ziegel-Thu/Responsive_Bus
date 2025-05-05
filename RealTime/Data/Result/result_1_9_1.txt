@@ -15,18 +15,20 @@ total cost:  2.9254169323799197 load_serviced 83
 Initial complemented solution generated
 vehicle  0
 1   42   pickup   30
+6   152   pickup   18
 0   66   pickup   27
-7   45   pickup   28
 0   6   delivery   27
 1   26   delivery   30
-7   53   delivery   28
+6   58   delivery   18
 2   30   pickup   26
+8   67   pickup   23
 2   79   delivery   26
-costs:  8.490735666175443 
+8   21   delivery   23
+costs:  7.248111438304594 
 
-total cost:  8.490735666175443 load_serviced 111 
+total cost:  7.248111438304594 load_serviced 124 
 
-8.490735666175443 111
+7.248111438304594 124
 
 Iteration:  0
 
@@ -1043,12 +1045,12 @@ vehicle  0
 6   58   delivery   18
 3   35   pickup   27
 7   52   pickup   28
-7   50   delivery   28
+7   53   delivery   28
 3   41   delivery   27
 1   26   delivery   30
 2   30   pickup   26
 2   79   delivery   26
-costs:  7.474714510573689 
+costs:  7.398474134575192 
 
-total cost:  7.474714510573689 load_serviced 220 
+total cost:  7.398474134575192 load_serviced 220 
 

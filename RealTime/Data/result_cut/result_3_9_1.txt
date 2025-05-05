@@ -7,7 +7,7 @@ vehicle  0
 2   35   delivery   28
 6   59   delivery   29
 3   18   delivery   17
-costs:  5.790837638134833 
+costs:  5.633843580771483 
 
 vehicle  1
 4   16   pickup   14
@@ -18,7 +18,7 @@ vehicle  1
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  5.265071619777469 
+costs:  5.161212741982249 
 
 vehicle  2
 5   30   pickup   12
@@ -27,18 +27,22 @@ vehicle  2
 5   108   delivery   12
 costs:  1.9106401406671878 
 
-total cost:  12.966549398579488 load_serviced 166 
+total cost:  12.705696463420919 load_serviced 166 
 
 
 Initial complemented solution generated
 vehicle  0
+16   57   pickup   10
 6   25   pickup   29
 2   60   pickup   28
 3   28   pickup   17
+16   140   delivery   10
+10   22   pickup   10
 2   35   delivery   28
+10   98   delivery   10
 6   59   delivery   29
 3   18   delivery   17
-costs:  5.790837638134833 
+costs:  23.496533778831427 
 
 vehicle  1
 4   16   pickup   14
@@ -49,24 +53,22 @@ vehicle  1
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  5.265071619777469 
+costs:  5.161212741982249 
 
 vehicle  2
-11   94   pickup   11
-11   44   delivery   11
+18   138   pickup   21
+26   147   pickup   23
 5   30   pickup   12
 0   21   pickup   20
-23   52   pickup   29
 0   32   delivery   20
+18   130   delivery   21
 5   108   delivery   12
-13   58   pickup   24
-23   39   delivery   29
-13   37   delivery   24
-costs:  8.373894084397115 
+26   211   delivery   23
+costs:  6.484284597449118 
 
-total cost:  19.429803342309416 load_serviced 230 
+total cost:  35.14203111826279 load_serviced 230 
 
-19.429803342309416 230
+35.14203111826279 230
 
 Iteration:  0
 
@@ -1070,67 +1072,67 @@ Iteration:  499
 
 best solution
 vehicle  0
-22   199   pickup   18
 6   25   pickup   29
+9   67   pickup   13
+9   65   delivery   13
 2   60   pickup   28
 3   28   pickup   17
 2   35   delivery   28
 6   59   delivery   29
-25   160   pickup   21
+16   114   pickup   10
+16   140   delivery   10
 10   22   pickup   10
 10   98   delivery   10
-25   155   delivery   21
-22   83   delivery   18
 3   18   delivery   17
-costs:  11.081196784992178 
+costs:  10.18673750363698 
 
 vehicle  1
+21   68   pickup   21
+20   91   pickup   12
 24   79   pickup   15
-9   67   pickup   13
-9   65   delivery   13
+20   6   delivery   12
+15   190   pickup   21
+12   117   pickup   12
+12   1   delivery   12
 24   74   delivery   15
 4   16   pickup   14
-16   114   pickup   10
-14   50   pickup   16
-19   123   pickup   24
-14   33   delivery   16
-16   140   delivery   10
+25   160   pickup   21
+25   155   delivery   21
+15   82   delivery   21
 7   64   pickup   26
 17   113   pickup   26
 8   40   pickup   10
 8   41   delivery   10
 17   92   delivery   26
 1   19   pickup   10
+21   38   delivery   21
 1   70   delivery   10
-19   86   delivery   24
 4   13   delivery   14
 7   63   delivery   26
-costs:  7.621340405764512 
+costs:  7.161797394766182 
 
 vehicle  2
-21   68   pickup   21
-5   30   pickup   12
-11   15   pickup   11
-0   21   pickup   20
-21   38   delivery   21
-23   52   pickup   29
-11   34   delivery   11
-15   180   pickup   21
-12   107   pickup   12
-0   32   delivery   20
-5   108   delivery   12
-15   131   delivery   21
-13   58   pickup   24
-20   91   pickup   12
-23   39   delivery   29
-20   6   delivery   12
 26   147   pickup   23
-12   1   delivery   12
-18   129   pickup   21
-26   202   delivery   23
-18   187   delivery   21
-13   37   delivery   24
-costs:  4.893727925383392 
+26   211   delivery   23
+18   138   pickup   21
+13   9   pickup   24
+5   30   pickup   12
+0   21   pickup   20
+0   32   delivery   20
+11   105   pickup   11
+11   34   delivery   11
+13   42   delivery   24
+23   48   pickup   29
+14   53   pickup   16
+18   130   delivery   21
+23   5   delivery   29
+14   10   delivery   16
+5   108   delivery   12
+22   199   pickup   18
+19   126   pickup   24
+22   106   delivery   18
+19   12   delivery   24
+costs:  6.250358256423105 
 
-total cost:  23.59626511614008 load_serviced 493 
+total cost:  23.598893154826268 load_serviced 493 
 

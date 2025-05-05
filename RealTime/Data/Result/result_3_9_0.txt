@@ -7,7 +7,7 @@ vehicle  0
 2   35   delivery   28
 6   59   delivery   29
 3   18   delivery   17
-costs:  5.790837638134833 
+costs:  5.633843580771483 
 
 vehicle  1
 4   16   pickup   14
@@ -18,7 +18,7 @@ vehicle  1
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  5.265071619777469 
+costs:  5.161212741982249 
 
 vehicle  2
 5   30   pickup   12
@@ -27,7 +27,7 @@ vehicle  2
 5   108   delivery   12
 costs:  1.9106401406671878 
 
-total cost:  12.966549398579488 load_serviced 166 
+total cost:  12.705696463420919 load_serviced 166 
 
 
 Initial complemented solution generated
@@ -35,102 +35,60 @@ vehicle  0
 6   25   pickup   29
 2   60   pickup   28
 3   28   pickup   17
-2   35   delivery   28
-6   59   delivery   29
 24   79   pickup   15
-3   18   delivery   17
+2   35   delivery   28
 24   74   delivery   15
-25   156   pickup   21
-9   67   pickup   13
-25   155   delivery   21
-9   65   delivery   13
-costs:  32.573812066713714 
+6   59   delivery   29
+3   18   delivery   17
+costs:  9.442904623750717 
 
 vehicle  1
-26   147   pickup   23
 4   16   pickup   14
-12   117   pickup   12
 7   64   pickup   26
-12   1   delivery   12
-17   113   pickup   26
-26   211   delivery   23
 8   40   pickup   10
 8   41   delivery   10
 1   19   pickup   10
-17   92   delivery   26
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  7.58784846597718 
+costs:  5.161212741982249 
 
 vehicle  2
-13   9   pickup   24
+19   126   pickup   24
+9   67   pickup   13
+25   156   pickup   21
+25   155   delivery   21
 5   30   pickup   12
+19   12   delivery   24
 0   21   pickup   20
+9   65   delivery   13
 0   32   delivery   20
 5   108   delivery   12
-23   52   pickup   29
-13   37   delivery   24
-20   31   pickup   12
-23   39   delivery   29
-20   6   delivery   12
-14   53   pickup   16
-14   10   delivery   16
-costs:  4.086036948832422 
+costs:  32.57499621208789 
 
-total cost:  44.24769748152332 load_serviced 357 
+total cost:  47.17911357782086 load_serviced 239 
 
-44.24769748152332 357
+47.17911357782086 239
 
 Iteration:  0
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  1
 
 Iteration:  2
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  3
-repair not found
-repair not found
-repair not found
 
 Iteration:  4
 
 Iteration:  5
 
 Iteration:  6
-repair not found
-repair not found
 
 Iteration:  7
-repair not found
-repair not found
-repair not found
 
 Iteration:  8
-repair not found
-repair not found
-repair not found
 
 Iteration:  9
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  10
 
@@ -141,9 +99,6 @@ Iteration:  12
 Iteration:  13
 
 Iteration:  14
-repair not found
-repair not found
-repair not found
 
 Iteration:  15
 
@@ -160,19 +115,14 @@ Iteration:  20
 Iteration:  21
 
 Iteration:  22
-repair not found
-repair not found
 
 Iteration:  23
 
 Iteration:  24
 
 Iteration:  25
-repair not found
-repair not found
 
 Iteration:  26
-repair not found
 
 Iteration:  27
 
@@ -195,262 +145,100 @@ Iteration:  35
 Iteration:  36
 
 Iteration:  37
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  38
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  39
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  40
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  41
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  42
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  43
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  44
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  45
-repair not found
 
 Iteration:  46
 
 Iteration:  47
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  48
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  49
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  50
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  51
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  52
-repair not found
 
 Iteration:  53
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  54
 
 Iteration:  55
 
 Iteration:  56
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  57
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  58
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  59
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  60
 
 Iteration:  61
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  62
 
 Iteration:  63
-repair not found
 
 Iteration:  64
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  65
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  66
-repair not found
 
 Iteration:  67
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  68
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  69
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  70
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  71
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  72
-repair not found
 
 Iteration:  73
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  74
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  75
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  76
-repair not found
-repair not found
-repair not found
 
 Iteration:  77
-repair not found
-repair not found
-repair not found
 
 Iteration:  78
 
 Iteration:  79
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  80
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  81
-repair not found
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  82
-repair not found
 
 Iteration:  83
-repair not found
 
 Iteration:  84
-repair not found
 
 Iteration:  85
 
@@ -491,16 +279,10 @@ Iteration:  102
 Iteration:  103
 
 Iteration:  104
-repair not found
-repair not found
 
 Iteration:  105
 
 Iteration:  106
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  107
 
@@ -559,7 +341,6 @@ Iteration:  133
 Iteration:  134
 
 Iteration:  135
-repair not found
 
 Iteration:  136
 
@@ -634,23 +415,14 @@ Iteration:  170
 Iteration:  171
 
 Iteration:  172
-repair not found
-repair not found
-repair not found
 
 Iteration:  173
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  174
 
 Iteration:  175
 
 Iteration:  176
-repair not found
-repair not found
 
 Iteration:  177
 
@@ -685,8 +457,6 @@ Iteration:  191
 Iteration:  192
 
 Iteration:  193
-repair not found
-repair not found
 
 Iteration:  194
 
@@ -697,13 +467,8 @@ Iteration:  196
 Iteration:  197
 
 Iteration:  198
-repair not found
-repair not found
 
 Iteration:  199
-repair not found
-repair not found
-repair not found
 
 Iteration:  200
 
@@ -734,118 +499,70 @@ Iteration:  212
 Iteration:  213
 
 Iteration:  214
-repair not found
-repair not found
 
 Iteration:  215
-repair not found
-repair not found
-repair not found
 
 Iteration:  216
 
 Iteration:  217
-repair not found
 
 Iteration:  218
 
 Iteration:  219
-repair not found
-repair not found
 
 Iteration:  220
-repair not found
-repair not found
 
 Iteration:  221
-repair not found
-repair not found
 
 Iteration:  222
-repair not found
 
 Iteration:  223
 
 Iteration:  224
 
 Iteration:  225
-repair not found
-repair not found
-repair not found
 
 Iteration:  226
-repair not found
-repair not found
 
 Iteration:  227
 
 Iteration:  228
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  229
-repair not found
-repair not found
-repair not found
 
 Iteration:  230
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  231
 
 Iteration:  232
-repair not found
-repair not found
 
 Iteration:  233
-repair not found
 
 Iteration:  234
-repair not found
 
 Iteration:  235
-repair not found
-repair not found
 
 Iteration:  236
 
 Iteration:  237
-repair not found
 
 Iteration:  238
-repair not found
-repair not found
 
 Iteration:  239
-repair not found
-repair not found
 
 Iteration:  240
-repair not found
-repair not found
 
 Iteration:  241
-repair not found
 
 Iteration:  242
-repair not found
-repair not found
 
 Iteration:  243
 
 Iteration:  244
-repair not found
 
 Iteration:  245
 
 Iteration:  246
-repair not found
-repair not found
 
 Iteration:  247
 
@@ -1028,37 +745,18 @@ Iteration:  335
 Iteration:  336
 
 Iteration:  337
-repair not found
-repair not found
-repair not found
 
 Iteration:  338
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  339
-repair not found
-repair not found
 
 Iteration:  340
 
 Iteration:  341
-repair not found
-repair not found
-repair not found
 
 Iteration:  342
-repair not found
-repair not found
-repair not found
 
 Iteration:  343
-repair not found
-repair not found
-repair not found
-repair not found
 
 Iteration:  344
 
@@ -1111,20 +809,12 @@ Iteration:  367
 Iteration:  368
 
 Iteration:  369
-repair not found
-repair not found
-repair not found
 
 Iteration:  370
 
 Iteration:  371
-repair not found
-repair not found
 
 Iteration:  372
-repair not found
-repair not found
-repair not found
 
 Iteration:  373
 
@@ -1133,8 +823,6 @@ Iteration:  374
 Iteration:  375
 
 Iteration:  376
-repair not found
-repair not found
 
 Iteration:  377
 
@@ -1281,51 +969,28 @@ Iteration:  447
 Iteration:  448
 
 Iteration:  449
-repair not found
-repair not found
-repair not found
 
 Iteration:  450
 
 Iteration:  451
-repair not found
-repair not found
 
 Iteration:  452
-repair not found
-repair not found
-repair not found
 
 Iteration:  453
-repair not found
-repair not found
-repair not found
 
 Iteration:  454
-repair not found
-repair not found
-repair not found
 
 Iteration:  455
-repair not found
-repair not found
 
 Iteration:  456
 
 Iteration:  457
-repair not found
-repair not found
 
 Iteration:  458
-repair not found
-repair not found
 
 Iteration:  459
 
 Iteration:  460
-repair not found
-repair not found
-repair not found
 
 Iteration:  461
 
@@ -1407,67 +1072,67 @@ Iteration:  499
 
 best solution
 vehicle  0
+21   68   pickup   21
 6   25   pickup   29
+13   9   pickup   24
+21   17   delivery   21
 2   60   pickup   28
 3   28   pickup   17
 2   35   delivery   28
+13   37   delivery   24
 6   59   delivery   29
-14   53   pickup   16
-14   10   delivery   16
 3   18   delivery   17
-costs:  6.798204565189906 
+costs:  5.718079762080241 
 
 vehicle  1
-16   114   pickup   10
-9   67   pickup   13
-16   140   delivery   10
-9   65   delivery   13
+20   31   pickup   12
+20   6   delivery   12
+4   16   pickup   14
 19   126   pickup   24
 19   12   delivery   24
 10   22   pickup   10
 10   98   delivery   10
-4   16   pickup   14
 7   64   pickup   26
+17   113   pickup   26
 8   40   pickup   10
 8   41   delivery   10
+17   92   delivery   26
 1   19   pickup   10
 1   70   delivery   10
 4   13   delivery   14
 7   63   delivery   26
-costs:  8.007390201787066 
+costs:  7.3620851270262655 
 
 vehicle  2
-21   68   pickup   21
 5   30   pickup   12
-13   9   pickup   24
-21   17   delivery   21
 11   15   pickup   11
 0   21   pickup   20
 0   32   delivery   20
+9   67   pickup   13
+14   53   pickup   16
+9   65   delivery   13
+18   138   pickup   21
 23   52   pickup   29
-15   190   pickup   21
 11   44   delivery   11
 12   117   pickup   12
-5   108   delivery   12
-13   37   delivery   24
-12   1   delivery   12
-23   39   delivery   29
-20   31   pickup   12
-20   6   delivery   12
+14   10   delivery   16
 24   79   pickup   15
-24   74   delivery   15
+23   39   delivery   29
 26   147   pickup   23
-18   138   pickup   21
-26   211   delivery   23
-17   113   pickup   26
+24   74   delivery   15
+12   1   delivery   12
+16   114   pickup   10
 18   187   delivery   21
+26   211   delivery   23
+16   140   delivery   10
 22   199   pickup   18
-17   92   delivery   26
+15   190   pickup   21
 22   83   delivery   18
 25   156   pickup   21
 25   155   delivery   21
 15   82   delivery   21
-costs:  4.89223930527638 
+5   108   delivery   12
+costs:  6.2125176039081 
 
-total cost:  19.69783407225335 load_serviced 493 
+total cost:  19.292682493014606 load_serviced 493 
 
